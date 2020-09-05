@@ -21,5 +21,5 @@ ip link set bridge0 master br0
 ip link set br0 type bridge vlan_filtering 1
 # this part is important. Without it the 802.1x EAP packets are not forwarded. Default behavior states to not forward auth traffic through a bridge
 echo 8 > /sys/class/net/br0/bridge/group_fwd_mask
-cd `dirname $0` && ./.venv/bin/python steal_dhcp.py wan0 br0
-ip link set 
+cd `dirname $0` && ./.venv/bin/python steal_dhcp.py wan0 br0 |sh
+ip link set bridge0 down
