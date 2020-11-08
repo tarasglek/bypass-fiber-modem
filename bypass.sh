@@ -26,9 +26,13 @@ until dhclient -4 -v $WAN_VLAN; do
   sleep 5;
   ip link set $MODEM up;
 done
+# flush all ipv6 addresses
+ip -6 addr flush label \*
 echo default-duid $DUID\; > /var/lib/dhcp/dhclient6.leases
 until dhclient -6 -v -cf /noconfig $WAN_VLAN; do
   ip link set $MODEM down;
+  sysctl -w net.ipv6.conf.$WAN_VLAN.addr_gen_mode=0
+  sysctl -w net.ipv6.conf.$WAN_VLAN.addr_gen_mode=1
   sleep 5;
   ip link set $MODEM up;
 done
